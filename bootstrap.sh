@@ -3,14 +3,14 @@
 set -e
 
 # Islands Dark Theme Bootstrap Installer
-# VS Code one-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
-# Cursor one-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash -s -- --cursor
+# VS Code one-liner: curl -fsSL https://raw.githubusercontent.com/SharmaTanishq/cursor-dark-islands/main/bootstrap.sh | bash
+# Cursor one-liner: curl -fsSL https://raw.githubusercontent.com/SharmaTanishq/cursor-dark-islands/main/bootstrap.sh | bash -s -- --cursor
 
 echo "🏝️  Islands Dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
-REPO_URL="https://github.com/SharmaTanishq/cursor-dark-islands.git"
+REPO_URL="${ISLANDS_DARK_REPO_URL:-https://github.com/SharmaTanishq/cursor-dark-islands.git}"
 INSTALL_DIR="$HOME/.islands-dark-temp"
 
 # Detect OS
@@ -30,7 +30,7 @@ rm -rf "$INSTALL_DIR"
 
 
 # Clone repository
-BRANCH="main"
+BRANCH="${ISLANDS_DARK_BRANCH:-main}"
 if ! git clone "$REPO_URL" "$INSTALL_DIR" --quiet --branch "$BRANCH"; then
     echo "❌ Failed to download Islands Dark"
     exit 1

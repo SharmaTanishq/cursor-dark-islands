@@ -1,6 +1,6 @@
 # Islands Dark Theme Bootstrap Installer for Windows
-# VS Code one-liner: irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
-# Cursor one-liner: iex "& { $(irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1) } -Target Cursor"
+# VS Code one-liner: irm https://raw.githubusercontent.com/SharmaTanishq/cursor-dark-islands/main/bootstrap.ps1 | iex
+# Cursor one-liner: iex "& { $(irm https://raw.githubusercontent.com/SharmaTanishq/cursor-dark-islands/main/bootstrap.ps1) } -Target Cursor"
 
 param(
     [ValidateSet("Auto", "VSCode", "Cursor")]
@@ -13,8 +13,8 @@ echo "🏝️  Islands Dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
-$RepoUrl = "https://github.com/bwya77/vscode-dark-islands.git"
-$Branch = "main"
+$RepoUrl = if ($env:ISLANDS_DARK_REPO_URL) { $env:ISLANDS_DARK_REPO_URL } else { "https://github.com/SharmaTanishq/cursor-dark-islands.git" }
+$Branch = if ($env:ISLANDS_DARK_BRANCH) { $env:ISLANDS_DARK_BRANCH } else { "main" }
 $InstallDir = "$env:TEMP\islands-dark-temp"
 
 echo "📥 Step 1: Downloading Islands Dark..."
