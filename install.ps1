@@ -1,12 +1,51 @@
 # Islands Dark Theme Installer for Windows
 
-param()
+param(
+    [ValidateSet("Auto", "VSCode", "Cursor")]
+    [string]$Target = "Auto"
+)
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "Islands Dark Theme Installer for Windows" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
+
+# Get the directory where this script is located
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+function Get-CursorCommand {
+    $cursorPath = Get-Command "cursor" -ErrorAction SilentlyContinue
+    if ($cursorPath) {
+        return $cursorPath.Source
+    }
+
+    $possiblePaths = @(
+        "$env:LOCALAPPDATA\Programs\Cursor\resources\app\bin\cursor.cmd",
+        "$env:LOCALAPPDATA\Programs\cursor\resources\app\bin\cursor.cmd",
+        "$env:LOCALAPPDATA\Programs\Cursor\bin\cursor.cmd"
+    )
+
+    foreach ($path in $possiblePaths) {
+        if (Test-Path $path) {
+            return $path
+        }
+    }
+
+    return $null
+}
+
+$cursorCommand = Get-CursorCommand
+$codeCommand = Get-Command "code" -ErrorAction SilentlyContinue
+$cursorSettingsRoot = "$env:APPDATA\Cursor"
+
+if (
+    $Target -eq "Cursor" -or
+    ($Target -eq "Auto" -and -not $codeCommand -and ($cursorCommand -or (Test-Path $cursorSettingsRoot)))
+) {
+    & "$scriptDir\install-cursor.ps1"
+    exit $LASTEXITCODE
+}
 
 # Check if VS Code is installed
 $codePath = Get-Command "code" -ErrorAction SilentlyContinue
@@ -30,6 +69,7 @@ if (-not $codePath) {
     if (-not $found) {
         Write-Host "Error: VS Code CLI (code) not found!" -ForegroundColor Red
         Write-Host "Please install VS Code and make sure 'code' command is in your PATH."
+        Write-Host "If you want to install for Cursor instead, run: .\install.ps1 -Target Cursor"
         Write-Host "You can do this by:"
         Write-Host "  1. Open VS Code"
         Write-Host "  2. Press Ctrl+Shift+P"
@@ -39,9 +79,6 @@ if (-not $codePath) {
 }
 
 Write-Host "VS Code CLI found" -ForegroundColor Green
-
-# Get the directory where this script is located
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host ""
 Write-Host "Step 1: Installing Islands Dark theme extension..."

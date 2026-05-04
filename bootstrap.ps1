@@ -1,7 +1,11 @@
 # Islands Dark Theme Bootstrap Installer for Windows
-# One-liner: irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
+# VS Code one-liner: irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
+# Cursor one-liner: iex "& { $(irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1) } -Target Cursor"
 
-param()
+param(
+    [ValidateSet("Auto", "VSCode", "Cursor")]
+    [string]$Target = "Auto"
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -39,7 +43,7 @@ echo ""
 # Run installer
 cd $InstallDir
 try {
-    .\install.ps1
+    .\install.ps1 -Target $Target
 } catch {
     echo "❌ Installation failed"
     echo $_.Exception.Message

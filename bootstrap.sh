@@ -3,7 +3,8 @@
 set -e
 
 # Islands Dark Theme Bootstrap Installer
-# One-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
+# VS Code one-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
+# Cursor one-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash -s -- --cursor
 
 echo "🏝️  Islands Dark Theme Bootstrap Installer"
 echo "=========================================="
@@ -44,7 +45,7 @@ echo ""
 # Run appropriate installer
 if [[ "$OS" == "macOS" ]] || [[ "$OS" == "Linux" ]]; then
     cd "$INSTALL_DIR"
-    bash install.sh
+    bash install.sh "$@"
 else
     echo "⚠️  Automatic installation not supported for this OS"
     echo "   Please manually run: cd $INSTALL_DIR && ./install.sh"
